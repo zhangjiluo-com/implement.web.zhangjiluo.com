@@ -1,8 +1,8 @@
-function MyPromise(executor) {
+function Promise(executor) {
   var self = this;
 
-  if (!(self instanceof MyPromise)) {
-    throw new Error("MyPromise 必须通过 'new' 关键字作为构造函数调用");
+  if (!(self instanceof Promise)) {
+    throw new Error("Promise 必须作为构造函数调用");
   }
 
   self.state = "pending"; // 一个 `promise` 只能是以下仨状态之一: pending, fulfilled, rejected
@@ -34,7 +34,7 @@ function isObject(obj) {
 
 /**
  * 执行 `promise` 的回调函数
- * @param {MyPromise} promise
+ * @param {Promise} promise
  */
 function flushHandlers(promise) {
   var state = promise.state;
@@ -62,9 +62,9 @@ function flushHandlers(promise) {
 }
 
 /**
- * MyPromise 解析过程
+ * Promise 解析过程
  * @link https://promisesaplus.com/#the-promise-resolution-procedure
- * @param {MyPromise} promise
+ * @param {Promise} promise
  * @param {any} x 待处理的值
  */
 function resolvePromise(promise, x) {
@@ -72,7 +72,7 @@ function resolvePromise(promise, x) {
 
   if (promise === x) return rejectPromise(promise, new TypeError("循环引用")); // 循环引用
 
-  if (x instanceof MyPromise) {
+  if (x instanceof Promise) {
     // 这里可以逻辑其实可以直接使用 thenable 的逻辑
     return queueMicrotask(function () {
       x.then(
@@ -136,7 +136,7 @@ function rejectPromise(promise, reason) {
   flushHandlers(promise);
 }
 
-MyPromise.prototype.then = function (onFulfilled, onRejected) {
+Promise.prototype.then = function (onFulfilled, onRejected) {
   var self = this;
 
   if (!isFunction(onFulfilled)) {
@@ -151,7 +151,7 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
     };
   }
 
-  var promise2 = new MyPromise(function () {});
+  var promise2 = new Promise(function () {});
 
   self.handlers.push({
     onFulfilled: onFulfilled,
@@ -164,39 +164,39 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
   return promise2;
 };
 
-MyPromise.prototype.catch = function (onRejected) {
+Promise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected);
 };
 
-MyPromise.prototype.finally = function (callback) {
+Promise.prototype.finally = function (callback) {
   return this.then(
     function (value) {
-      return MyPromise.resolve(callback()).then(function () {
+      return Promise.resolve(callback()).then(function () {
         return value;
       });
     },
     function (reason) {
-      return MyPromise.resolve(callback()).then(function () {
+      return Promise.resolve(callback()).then(function () {
         throw reason;
       });
     }
   );
 };
 
-MyPromise.resolve = function (value) {
-  return new MyPromise(function (resolve, reject) {
+Promise.resolve = function (value) {
+  return new Promise(function (resolve, reject) {
     resolve(value);
   });
 };
 
-MyPromise.reject = function (reason) {
-  return new MyPromise(function (resolve, reject) {
+Promise.reject = function (reason) {
+  return new Promise(function (resolve, reject) {
     reject(reason);
   });
 };
 
-MyPromise.all = function (promises) {
-  return new MyPromise(function (resolve, reject) {
+Promise.all = function (promises) {
+  return new Promise(function (resolve, reject) {
     var results = [];
     var count = 0;
     var total = promises.length;
@@ -223,8 +223,8 @@ MyPromise.all = function (promises) {
   });
 };
 
-MyPromise.race = function (promises) {
-  return new MyPromise(function (resolve, reject) {
+Promise.race = function (promises) {
+  return new Promise(function (resolve, reject) {
     for (var i = 0; i < promises.length; i++) {
       var promise = promises[i];
       promise.then(
@@ -239,8 +239,8 @@ MyPromise.race = function (promises) {
   });
 };
 
-MyPromise.allSettled = function (promises) {
-  return new MyPromise(function (resolve, reject) {
+Promise.allSettled = function (promises) {
+  return new Promise(function (resolve, reject) {
     var results = [];
     var count = 0;
     var total = promises.length;
@@ -271,8 +271,8 @@ MyPromise.allSettled = function (promises) {
   });
 };
 
-MyPromise.any = function (promises) {
-  return new MyPromise(function (resolve, reject) {
+Promise.any = function (promises) {
+  return new Promise(function (resolve, reject) {
     var reasons = [];
     var count = 0;
     var total = promises.length;
@@ -298,9 +298,9 @@ MyPromise.any = function (promises) {
   });
 };
 
-MyPromise.try = function (cb) {
+Promise.try = function (cb) {
   var args = Array.prototype.slice.call(arguments, 1);
-  return new MyPromise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     try {
       var result = cb.apply(null, args);
       resolve(result);
@@ -310,13 +310,13 @@ MyPromise.try = function (cb) {
   });
 };
 
-MyPromise.withResolvers = function () {
+Promise.withResolvers = function () {
   var resolve, reject;
-  var promise = new MyPromise(function (res, rej) {
+  var promise = new Promise(function (res, rej) {
     resolve = res;
     reject = rej;
   });
   return { promise, resolve, reject };
 };
 
-module.exports = MyPromise;
+module.exports = Promise;

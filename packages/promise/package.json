@@ -1,0 +1,11 @@
+{
+  "name": "promise.implement.web.zhangjiluo.com",
+  "version": "1.1.0",
+  "scripts": {
+    "test": "promises-aplus-tests ./src/adapter.cjs"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "promises-aplus-tests": "2.1.2"
+  }
+}

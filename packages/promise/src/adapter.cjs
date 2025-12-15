@@ -1,15 +1,15 @@
-const MyPromise = require(".");
+const Promise = require("./index.cjs")
 
 function resolved(value) {
-  return MyPromise.resolve(value);
+  return Promise.resolve(value);
 }
 
 function rejected(reason) {
-  return MyPromise.reject(reason);
+  return Promise.reject(reason);
 }
 
 function deferred() {
-  return MyPromise.withResolvers();
+  return Promise.withResolvers();
 }
 
 module.exports = {
