@@ -14,6 +14,12 @@ importers:
         specifier: 2.1.2
         version: 2.1.2
 
+  packages/util:
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
 packages:
 
   available-typed-arrays@1.0.7:
@@ -223,6 +229,11 @@ packages:
   to-iso-string@0.0.2:
     resolution: {integrity: sha512-oeHLgfWA7d0CPQa6h0+i5DAJZISz5un0d5SHPkw+Untclcvzv9T+AC3CvGXlZJdOlIbxbTfyyzlqCXc5hjpXYg==}
     deprecated: to-iso-string has been deprecated, use @segment/to-iso-string instead.
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
   underscore@1.8.3:
     resolution: {integrity: sha512-5WsVTFcH1ut/kkhAaHf4PVgI8c7++GiVcpCGxPouI6ZVjsqPnSDf8h/8HtVqc0t4fzRXwnMK70EcZeAs3PIddg==}
@@ -448,6 +459,8 @@ snapshots:
   supports-color@1.2.0: {}
 
   to-iso-string@0.0.2: {}
+
+  typescript@5.9.3: {}
 
   underscore@1.8.3: {}
 

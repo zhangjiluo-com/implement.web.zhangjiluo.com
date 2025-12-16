@@ -1,0 +1,8 @@
+{
+  "name": "util.implement.web.zhangjiluo.com",
+  "scripts": {},
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
